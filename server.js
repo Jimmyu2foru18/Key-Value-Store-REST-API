@@ -6,18 +6,13 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(bodyParser.json());
-
-// Serve static files from the root directory
 app.use(express.static(path.join(__dirname)));
 
-// Serve index.html from root
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
-
-// Ensure data directory exists
 const dataDir = path.join(__dirname, 'data');
 const dataFile = path.join(dataDir, 'kvstore.json');
 
@@ -25,19 +20,19 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
 }
 
-// Initialize store from file or create empty store
 let store = {};
 try {
   if (fs.existsSync(dataFile)) {
     const data = fs.readFileSync(dataFile, 'utf8');
     store = JSON.parse(data);
     console.log('Data loaded from file');
-  } else {
-    // Create empty store file
+  } 
+  else {
     fs.writeFileSync(dataFile, JSON.stringify(store), 'utf8');
     console.log('Created new data file');
   }
-} catch (error) {
+} 
+catch (error) {
   console.error('Error initializing data store:', error);
 }
 
@@ -54,19 +49,16 @@ const saveStore = () => {
 
 // Routes
 
-// POST - Store a key-value pair
+// POST 
 app.post('/api/kv', (req, res) => {
   const { key, value } = req.body;
   
-  // Validate request
   if (!key || value === undefined) {
     return res.status(400).json({ error: 'Both key and value are required' });
   }
   
-  // Store the key-value pair
   store[key] = value;
   
-  // Save to file
   if (saveStore()) {
     res.status(201).json({ message: 'Stored successfully', key, value });
   } else {
@@ -74,7 +66,7 @@ app.post('/api/kv', (req, res) => {
   }
 });
 
-// GET - Retrieve a value by key
+// GET 
 app.get('/api/kv/:key', (req, res) => {
   const { key } = req.params;
   
@@ -85,12 +77,11 @@ app.get('/api/kv/:key', (req, res) => {
   }
 });
 
-// GET - List all keys
 app.get('/api/kv', (req, res) => {
   res.json({ keys: Object.keys(store) });
 });
 
-// DELETE - Remove a key-value pair
+// DELETE
 app.delete('/api/kv/:key', (req, res) => {
   const { key } = req.params;
   
