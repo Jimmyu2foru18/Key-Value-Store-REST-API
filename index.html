@@ -117,7 +117,7 @@
         // API endpoint
         const API_URL = '/api/kv';
         
-        // Helper function to display results
+        // Results
         function displayResult(result, isError = false) {
             const resultsElement = document.getElementById('results');
             resultsElement.textContent = typeof result === 'object' ? 
@@ -125,7 +125,7 @@
             resultsElement.className = isError ? 'error' : 'success';
         }
         
-        // Helper function for API requests
+        // API requests
         async function apiRequest(method, url, data = null) {
             try {
                 const options = {
@@ -152,7 +152,7 @@
             }
         }
         
-        // Store a key-value pair
+        // Store key-value pair
         document.getElementById('storeBtn').addEventListener('click', async () => {
             const key = document.getElementById('storeKey').value.trim();
             const value = document.getElementById('storeValue').value.trim();
