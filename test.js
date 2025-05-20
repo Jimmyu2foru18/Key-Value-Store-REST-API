@@ -1,12 +1,10 @@
-// Simple test script for the Key-Value Store API
+// Test script for the Key-Value Store API
 const http = require('http');
-
-// Configuration
 const HOST = 'localhost';
 const PORT = 3000;
 const BASE_URL = `http://${HOST}:${PORT}/api/kv`;
 
-// Helper function for making HTTP requests
+// Make HTTP requests
 function makeRequest(method, path, data = null) {
   return new Promise((resolve, reject) => {
     const options = {
@@ -48,36 +46,30 @@ function makeRequest(method, path, data = null) {
   });
 }
 
-// Run tests
 async function runTests() {
   console.log('Starting Key-Value Store API tests...');
   
   try {
-    // Test 1: Store a key-value pair
     console.log('\nTest 1: Storing a key-value pair');
     const storeResult = await makeRequest('POST', '/api/kv', { key: 'test_key', value: 'test_value' });
     console.log(`Status: ${storeResult.statusCode}`);
     console.log('Response:', storeResult.data);
 
-    // Test 2: Retrieve the value
     console.log('\nTest 2: Retrieving the value');
     const getResult = await makeRequest('GET', '/api/kv/test_key');
     console.log(`Status: ${getResult.statusCode}`);
     console.log('Response:', getResult.data);
 
-    // Test 3: List all keys
     console.log('\nTest 3: Listing all keys');
     const listResult = await makeRequest('GET', '/api/kv');
     console.log(`Status: ${listResult.statusCode}`);
     console.log('Response:', listResult.data);
 
-    // Test 4: Delete the key-value pair
     console.log('\nTest 4: Deleting the key-value pair');
     const deleteResult = await makeRequest('DELETE', '/api/kv/test_key');
     console.log(`Status: ${deleteResult.statusCode}`);
     console.log('Response:', deleteResult.data);
 
-    // Test 5: Verify deletion
     console.log('\nTest 5: Verifying deletion');
     const verifyResult = await makeRequest('GET', '/api/kv/test_key');
     console.log(`Status: ${verifyResult.statusCode}`);
@@ -89,7 +81,7 @@ async function runTests() {
   }
 }
 
-// Check if server is running before starting tests
+// Check if server is running
 const checkServer = () => {
   return new Promise((resolve) => {
     const req = http.get(`http://${HOST}:${PORT}`, (res) => {
@@ -101,7 +93,6 @@ const checkServer = () => {
   });
 };
 
-// Main execution
 async function main() {
   console.log('Checking if server is running...');
   const serverRunning = await checkServer();
