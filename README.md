@@ -1,6 +1,6 @@
 # Key-Value Store REST API
 
-A simple and efficient key-value store with a REST API interface and web UI.
+A key-value store with a REST API and web UI.
 
 ## Features
 
